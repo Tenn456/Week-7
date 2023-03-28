@@ -7,36 +7,52 @@ public class ItemInfo : MonoBehaviour
     public string itemName;
     public int itemValue;
     PlayerControl playerScript;
-
-    public string lookingAt = "nothing!";
+    AudioSource ding;
+    public bool collected;
+    
 
     // Start is called before the first frame update
     void Start()
     {
+        //playerScript gets information from the PlayerControl script(component) on the Player game object
         playerScript = GameObject.Find("Player").GetComponent<PlayerControl>();
+        ding = GameObject.Find("Player").GetComponent<AudioSource>();
+        
+        //Sets bool collected to false
+        collected = false;
     }
 
     void OnMouseOver()
     {
+        //When mouse is over key, displays itemName string on the console and replaces the itemText text to the itemName string
         Debug.Log(itemName);
         playerScript.itemText.text = itemName;
     }
 
     void OnMouseExit()
     {
-        Debug.Log(lookingAt);
-        playerScript.itemText.text = lookingAt;
+        //When mouse moves away from key, displays lookingAt string on the console and replaces itemText text to the lookingAt string
+        Debug.Log(playerScript.lookingAt);
+        playerScript.itemText.text = playerScript.lookingAt;
     }
 
     void OnMouseDown()
     {
+        //When mouse clicks on key, sets bool hasKey from playerScript to true and sets bool collected to true
         playerScript.hasKey = true;
-        Destroy(gameObject);
+        collected = true;
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if(collected)
+        {
+            //if bool collected is true, displays lookingAt string on the console, replaces itemText text to the lookingAt string, and destroys game object
+            Debug.Log(playerScript.lookingAt);
+            playerScript.itemText.text = playerScript.lookingAt;
+            Destroy(gameObject);
+        }
     }
 }

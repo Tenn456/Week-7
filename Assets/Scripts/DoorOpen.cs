@@ -9,6 +9,7 @@ public class DoorOpen : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //playerScript gets information from the PlayerControl script(component) on the Player game object
         playerScript = GameObject.Find("Player").GetComponent<PlayerControl>();
     }
 
@@ -16,6 +17,7 @@ public class DoorOpen : MonoBehaviour
     {
         if(playerScript.hasKey == true)
         {
+            //If player has key and clicks on door, it is destroyed
             Destroy(gameObject);
         }
     }
