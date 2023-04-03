@@ -25,6 +25,8 @@ public class PlayerControl : MonoBehaviour
 
     public bool hasKey = false;
 
+    Rigidbody rb;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -32,6 +34,8 @@ public class PlayerControl : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         //characterControl gets information from the CharacterController component
         characterControl = GetComponent<CharacterController>();
+        rb = GetComponent<Rigidbody>();
+        
 
         //Setting the itemText text to the lookingAt string
         itemText.text = lookingAt;
@@ -58,5 +62,8 @@ public class PlayerControl : MonoBehaviour
         vel = transform.TransformDirection(vel);
         //Makes the player move
         characterControl.Move(vel * Time.deltaTime);
+
+        rb.WakeUp();
+
     }
 }

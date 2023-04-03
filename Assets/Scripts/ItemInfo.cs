@@ -52,6 +52,7 @@ public class ItemInfo : MonoBehaviour
             //if bool collected is true, displays lookingAt string on the console, replaces itemText text to the lookingAt string, and destroys game object
             Debug.Log(playerScript.lookingAt);
             playerScript.itemText.text = playerScript.lookingAt;
+            ding.Play();
             Destroy(gameObject);
         }
     }
