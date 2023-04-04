@@ -25,7 +25,24 @@ public class PlayerControl : MonoBehaviour
 
     public bool hasKey = false;
 
-    Rigidbody rb;
+    public KeyCode runButton;
+    public KeyCode jumpButton;
+
+    public float castDist;
+    public float floorDist;
+
+    public Camera mainCam;
+
+    public bool jump;
+    public bool canBeCollected;
+
+    
+    public float gravity = -9.81f;
+    public float gravityScale = 1;
+    public float jumpHeight = 4;
+    float velocity;
+    
+    
 
     // Start is called before the first frame update
     void Start()
@@ -34,7 +51,7 @@ public class PlayerControl : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         //characterControl gets information from the CharacterController component
         characterControl = GetComponent<CharacterController>();
-        rb = GetComponent<Rigidbody>();
+        
         
 
         //Setting the itemText text to the lookingAt string
@@ -61,9 +78,63 @@ public class PlayerControl : MonoBehaviour
         //Makes the player move based on where they are facing
         vel = transform.TransformDirection(vel);
         //Makes the player move
-        characterControl.Move(vel * Time.deltaTime);
+        characterControl.SimpleMove(vel);
 
-        rb.WakeUp();
+        //if the player holds the run button, the player's speed is tripled
+        if(Input.GetKeyDown(runButton))
+        {
+            speed *= 3;
+        }
 
+        //if the player releases the run button, the player's speed is divided by 3;
+        if(Input.GetKeyUp(runButton))
+        {
+            speed /= 3;
+        }
+
+    }
+
+    void FixedUpdate()
+    {
+        RaycastHit hit;
+        RaycastHit floor;
+        Vector3 rayStart = mainCam.ViewportToWorldPoint(Input.mousePosition);
+
+        //If the player is close enough to a Game Object, canBeCollected will be true
+        if(Physics.Raycast(rayStart, playerCam.forward, out hit, castDist))
+        {
+            canBeCollected = true;
+        }
+        
+        //else it will be false
+        else
+        {
+            canBeCollected = false;
+        }
+
+        //If the player is on the ground, jump will be true
+        if(Physics.Raycast(rayStart, -playerCam.up, out floor, floorDist))
+        {
+            jump = true;
+        }
+
+        //else it will be false
+        else
+        {
+            jump = false;
+        }
+        
+        //if jump is true and the jump button is pressed, the player will jump
+        if(jump && Input.GetKeyDown(jumpButton))
+        {
+            velocity = Mathf.Sqrt(jumpHeight * -2f * (gravity * gravityScale));
+        }
+        velocity += gravity * gravityScale * Time.deltaTime;
+        MovePlayer();
+
+        void MovePlayer()
+        {
+            characterControl.Move(new Vector3(0, velocity, 0) * Time.deltaTime);
+        }
     }
 }

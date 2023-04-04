@@ -38,9 +38,12 @@ public class ItemInfo : MonoBehaviour
 
     void OnMouseDown()
     {
-        //When mouse clicks on key, sets bool hasKey from playerScript to true and sets bool collected to true
-        playerScript.hasKey = true;
-        collected = true;
+        //When mouse clicks on key, if canBeCollected is true, sets bool hasKey from playerScript to true and sets bool collected to true
+        if(playerScript.canBeCollected)
+        {
+            playerScript.hasKey = true;
+            collected = true;
+        }
         
     }
 

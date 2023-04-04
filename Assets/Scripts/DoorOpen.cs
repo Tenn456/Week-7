@@ -15,9 +15,9 @@ public class DoorOpen : MonoBehaviour
 
     void OnMouseDown()
     {
-        if(playerScript.hasKey == true)
+        if(playerScript.hasKey && playerScript.canBeCollected)
         {
-            //If player has key and clicks on door, it is destroyed
+            //If player has key and canBeCollected is true and clicks on door, it is destroyed
             Destroy(gameObject);
         }
     }
