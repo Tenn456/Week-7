@@ -127,6 +127,7 @@ public class PlayerControl : MonoBehaviour
         //if jump is true and the jump button is pressed, the player will jump
         if(jump && Input.GetKeyDown(jumpButton))
         {
+            Debug.Log("Jump!");
             velocity = Mathf.Sqrt(jumpHeight * -2f * (gravity * gravityScale));
         }
         velocity += gravity * gravityScale * Time.deltaTime;
